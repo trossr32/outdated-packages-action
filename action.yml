@@ -92,6 +92,7 @@ runs:
     # Dotnet outdated
     - name: Restore packages
       if: ${{ inputs.use-dotnet-outdated }} == 'true'
+      shell: bash
       run: dotnet restore ${{ inputs.dotnet-solution-path }}
 
     - name: Install dotnet outdated tool
