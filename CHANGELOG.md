@@ -1,8 +1,14 @@
 # outdated-packages-action
 
+## 0.0.3
+
+### Patch Changes
+
+- Initial release of composite action
+
 ## 0.0.2
 
-### Bug fixes
+### Patch Changes
 
 - Initial release of composite action
 
