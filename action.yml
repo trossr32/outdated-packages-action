@@ -54,6 +54,7 @@ runs:
     - name: NPM install
       if: ${{ inputs.use-npm-outdated }} == 'true'
       working-directory: ${{ inputs.npm-project-directory }}
+      shell: bash
       run: npm install
 
     - name: NPM update check
