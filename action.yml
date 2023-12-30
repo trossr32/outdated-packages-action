@@ -57,13 +57,13 @@ runs:
 
     # NPM outdated
     - name: NPM install
-      if: ${{ inputs.use-npm-outdated }} == 'true'
+      if: ${{ inputs.use-npm-outdated == 'true' }}
       working-directory: ${{ inputs.npm-project-directory }}
       shell: bash
       run: npm install
 
     - name: NPM update check
-      if: ${{ inputs.use-npm-outdated }} == 'true'
+      if: ${{ inputs.use-npm-outdated == 'true' }}
       uses: MeilCli/npm-update-check-action@v4 
       id: npm-outdated-check
       with:
@@ -71,7 +71,7 @@ runs:
         output_text_style: short
 
     - name: Create npm outdated comment
-      if: ${{ inputs.use-npm-outdated }} == 'true'
+      if: ${{ inputs.use-npm-outdated == 'true' }}
       id: npm-outdated-comment
       working-directory: ${{ inputs.npm-project-directory }}
       shell: bash
@@ -89,7 +89,7 @@ runs:
         fi
 
     - name: NPM outdated PR comment
-      if: ${{ inputs.use-npm-outdated }} == 'true'
+      if: ${{ inputs.use-npm-outdated == 'true' }}
       uses: thollander/actions-comment-pull-request@v2
       with:
         filePath: "${{ inputs.npm-project-directory }}/npm_outdated.md"
@@ -97,17 +97,17 @@ runs:
 
     # Dotnet outdated
     - name: Restore packages
-      if: ${{ inputs.use-dotnet-outdated }} == 'true'
+      if: ${{ inputs.use-dotnet-outdated == 'true' }}
       shell: bash
       run: dotnet restore ${{ inputs.dotnet-solution-path }}
 
     - name: Install dotnet outdated tool
-      if: ${{ inputs.use-dotnet-outdated }} == 'true'
+      if: ${{ inputs.use-dotnet-outdated == 'true' }}
       shell: bash
       run: dotnet tool install --global dotnet-outdated-tool
 
     - name: Run outdated script
-      if: ${{ inputs.use-dotnet-outdated }} == 'true'
+      if: ${{ inputs.use-dotnet-outdated == 'true' }}
       id: dotnet-outdated
       shell: bash
       run: |
@@ -130,7 +130,7 @@ runs:
         fi
 
     - name: Dotnet outdated PR comment
-      if: ${{ inputs.use-dotnet-outdated }} == 'true'
+      if: ${{ inputs.use-dotnet-outdated == 'true' }}
       uses: thollander/actions-comment-pull-request@v2
       with:
         filePath: "outdated.md"

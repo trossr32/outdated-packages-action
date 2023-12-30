@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 0.0.7
+
+### Patch Changes
+
+- Fix conditionals
+
 ## 0.0.6
 
 ### Patch Changes
