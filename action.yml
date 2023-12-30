@@ -7,8 +7,8 @@ inputs:
   # use dotnet outdated
   use-dotnet-outdated:
     description: Use dotnet outdated
-    required: true
-    default: 'true'
+    required: false
+    default: 'false'
 
   # required for dotnet outdated
   dotnet-solution-path:
@@ -31,12 +31,17 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     # Validate action inputs
     - name: Validate action inputs
       shell: bash
       run: |
+        echo "use-dotnet-outdated:   ${{ inputs.use-dotnet-outdated }}"
+        echo "dotnet-solution-path:  ${{ inputs.dotnet-solution-path }}"
+        echo "use-npm-outdated:      ${{ inputs.use-npm-outdated }}"
+        echo "npm-project-directory: ${{ inputs.npm-project-directory }}"
+
         if ([[ "${{ inputs.use-dotnet-outdated }}" == 'true' ]] && [[ -z "${{ inputs.dotnet-solution-path }}" ]]); then
           echo "dotnet-solution-path is empty"; error=true;
         fi

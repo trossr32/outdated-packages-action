@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 0.0.6
+
+### Patch Changes
+
+- Add input logging to help debug issues
+
 ## 0.0.5
 
 ### Patch Changes
