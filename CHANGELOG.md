@@ -1,43 +1,49 @@
 # outdated-packages-action
 
+## 0.0.8
+
+### Fixed
+
+- Fix validation and amend npm project default
+
 ## 0.0.7
 
-### Patch Changes
+### Fixed
 
 - Fix conditionals
 
 ## 0.0.6
 
-### Patch Changes
+### Added
 
 - Add input logging to help debug issues
 
 ## 0.0.5
 
-### Patch Changes
+### Changed
 
 - Initial release of composite action
 
 ## 0.0.4
 
-### Patch Changes
+### Changed
 
 - Initial release of composite action
 
 ## 0.0.3
 
-### Patch Changes
+### Changed
 
 - Initial release of composite action
 
 ## 0.0.2
 
-### Patch Changes
+### Changed
 
 - Initial release of composite action
 
 ## 0.0.1
 
-### Major Changes
+### Added
 
 - Initial release of composite action

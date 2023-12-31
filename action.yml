@@ -26,7 +26,7 @@ inputs:
   npm-project-directory:
     description: Path of the npm project directory
     required: false
-    default: ''
+    default: '.'
 
 runs:
   using: composite
@@ -46,7 +46,7 @@ runs:
           echo "dotnet-solution-path is empty"; error=true;
         fi
 
-        if ([[ "${{ inputs.use-npm-outdated }}" == 'true' ]] && [[ -z "${{ inputs.npm-project-directory }}" ]]); then
+        if ([[ "${{ inputs.npm-project-directory }}" == 'true' ]] && [[ -z "${{ inputs.npm-project-directory }}" ]]); then
           echo "npm-project-directory is empty"; error=true;
         fi
 
