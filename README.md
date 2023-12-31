@@ -1,5 +1,5 @@
 # outdated-packages-action
-Github action for outdated dotnet and npm packages
+Github action for reporting on outdated dotnet packages in a solution or npm packages in a project directory.
 
 ## Overview
 
