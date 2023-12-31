@@ -66,6 +66,16 @@ jobs:
           npm-project-directory: ${{ env.PROJECT_DIR }}
 ```
 
+## Example output
+
+#### dotnet-outdated
+
+![dotnet-outdated](./assets/dotnet-outdated-example.png)
+
+#### npm-outdated
+
+![npm-outdated](./assets/npm-outdated-example.png)
+
 ## Credit
 
 This action leverages these projects:
