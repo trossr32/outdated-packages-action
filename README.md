@@ -8,27 +8,29 @@ This action will run either or both of:
 - <a href="https://github.com/dotnet-outdated/dotnet-outdated">dotnet-outdated</a> against a supplied dotnet solution
 - <a href="https://github.com/MeilCli/npm-update-check-action">npm-update-check-action</a> against a supplied npm project directory
 
-The intention of this action is purely to report on any outdated packages and not to perform any kind of update action. It is designed to be actioned only within the context of a pull request, no other scenarios are catered for.
+> [!NOTE]
+> The intention of this action is purely to report on any outdated packages and not to perform any kind of update action. Reports for any outdated packages found are added as a comment to the pull request used to run this action.
 
-Reports for any outdated packages found are added as a comment to the pull request used to run this action.
+> [!WARNING]
+> This action is designed to be actioned only within the context of a pull request, no other scenarios are catered for.
 
 ## Inputs
 
-### `use-dotnet-outdated`
+#### `use-dotnet-outdated`
 
-**Optional** Whether to run dotnet-outdated. Default `false`.
+**Optional** - Whether to run dotnet-outdated. Default `false`.
 
-### `dotnet-solution-path`
+#### `dotnet-solution-path`
 
-**Optional** The path to the dotnet solution file. Required if `use-dotnet-outdated` is `true`.
+**Optional** - The path to the dotnet solution file. Required if `use-dotnet-outdated` is `true`.
 
-### `use-npm-outdated`
+#### `use-npm-outdated`
 
-**Optional** Whether to run npm-update-check-action. Default `false`.
+**Optional** - Whether to run npm-update-check-action. Default `false`.
 
-### `npm-project-directory`
+#### `npm-project-directory`
 
-**Optional** The path to the npm project directory. Default `.`.
+**Optional** - The path to the npm project directory. Default `.`.
 
 ## Example github action 
 
@@ -60,3 +62,11 @@ jobs:
           use-npm-outdated: true
           npm-project-directory: ${{ env.PROJECT_DIR }}
 ```
+
+## Credit
+
+This action leverages these projects:
+
+- <a href="https://github.com/dotnet-outdated/dotnet-outdated">dotnet-outdated</a>
+- <a href="https://github.com/MeilCli/npm-update-check-action">npm-update-check-action</a>
+- <a href="https://github.com/thollander/actions-comment-pull-request">actions-comment-pull-request</a>
