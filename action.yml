@@ -1,7 +1,11 @@
 ---
 # yamllint disable rule:line-length
-name: Outdated package checker
-description: check for outdated nuget and npm packages
+name: Outdated nuget/npm package checker
+description: Check for outdated nuget and/or npm packages and comment on the PR with the results
+
+branding:
+  icon: 'message-circle'
+  color: 'green'
 
 inputs:
   # use dotnet outdated
