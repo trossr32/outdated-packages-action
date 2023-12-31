@@ -12,6 +12,24 @@ The intention of this action is purely to report on any outdated packages and no
 
 Reports for any outdated packages found are added as a comment to the pull request used to run this action.
 
+## Inputs
+
+### `use-dotnet-outdated`
+
+**Optional** Whether to run dotnet-outdated. Default `false`.
+
+### `dotnet-solution-path`
+
+**Optional** The path to the dotnet solution file. Required if `use-dotnet-outdated` is `true`.
+
+### `use-npm-outdated`
+
+**Optional** Whether to run npm-update-check-action. Default `false`.
+
+### `npm-project-directory`
+
+**Optional** The path to the npm project directory. Default `.`.
+
 ## Example github action 
 
 outdated.yml
@@ -35,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: trossr32/outdated-packages-action@v0.0.7
+      - uses: trossr32/outdated-packages-action@v0.0.8
         with:
           use-dotnet-outdated: true
           dotnet-solution-path: ${{ env.SOLUTION_PATH }}
