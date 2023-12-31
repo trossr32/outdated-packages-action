@@ -9,8 +9,8 @@ This action will run either or both of:
 - <a href="https://github.com/MeilCli/npm-update-check-action">npm-update-check-action</a> against a supplied npm project directory
 
 > [!NOTE]
-> The intention of this action is purely to **report** on any outdated packages and _not_ to perform any kind of update action.
-> 
+> The intention of this action is purely to notify of any outdated packages and _not_ to perform any kind of update action.
+>  
 > Reports for any outdated packages found are added as a comment to the pull request used to run this action.
 > 
 > If the action is re-run against a pull request that has already been commented on, the existing comment will be updated. 
