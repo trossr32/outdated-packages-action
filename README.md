@@ -35,7 +35,7 @@ This action will run either or both of:
 ## Example github action 
 
 outdated.yml
-```
+```yaml
 name: Outdated package checks
 
 # Run workflow on pull request to the main branch
@@ -61,7 +61,8 @@ jobs:
           dotnet-solution-path: ${{ env.SOLUTION_PATH }}
           # Whether to run npm-update-check-action. Default is false if not supplied.
           use-npm-outdated: true
-          # The path to the npm project directory. Default is '.', so only required if the npm project is not the root of the repository
+          # The path to the npm project directory.
+          # Default is '.', so only required if the npm project is not the root of the repository.
           npm-project-directory: ${{ env.PROJECT_DIR }}
 ```
 
