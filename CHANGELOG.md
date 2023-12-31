@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 0.0.9
+
+### Patch Changes
+
+- Bump version
+
 ## 0.0.8
 
 ### Patch Changes
