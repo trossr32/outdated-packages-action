@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 1.0.0
+
+### Major Changes
+
+- Ready to be used as a composite action
+
 ## 0.0.8
 
 ### Patch Changes
