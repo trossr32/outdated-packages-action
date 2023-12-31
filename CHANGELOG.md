@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 1.1.0
+
+### Minor Changes
+
+- Deploy to github marketplace
+
 ## 1.0.0
 
 ### Major Changes
