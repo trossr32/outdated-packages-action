@@ -43,8 +43,6 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     branches: [ main ]
-  
-  workflow_dispatch:
 
 env:
   SOLUTION_PATH: 'src/RobGreenEngineering.sln'
@@ -57,9 +55,13 @@ jobs:
     steps:
       - uses: trossr32/outdated-packages-action@v0.0.8
         with:
+          # Whether to run dotnet-outdated. Default is false if not supplied.
           use-dotnet-outdated: true
+          # The path to the dotnet solution file. Required if use-dotnet-outdated is true.
           dotnet-solution-path: ${{ env.SOLUTION_PATH }}
+          # Whether to run npm-update-check-action. Default is false if not supplied.
           use-npm-outdated: true
+          # The path to the npm project directory. Default is '.', so only required if the npm project is not the root of the repository
           npm-project-directory: ${{ env.PROJECT_DIR }}
 ```
 
