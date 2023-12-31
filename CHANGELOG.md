@@ -2,48 +2,48 @@
 
 ## 0.0.8
 
-### Fixed
+### Patch Changes
 
 - Fix validation and amend npm project default
 
 ## 0.0.7
 
-### Fixed
+### Patch Changes
 
 - Fix conditionals
 
 ## 0.0.6
 
-### Added
+### Patch Changes
 
 - Add input logging to help debug issues
 
 ## 0.0.5
 
-### Changed
+### Patch Changes
 
 - Initial release of composite action
 
 ## 0.0.4
 
-### Changed
+### Patch Changes
 
 - Initial release of composite action
 
 ## 0.0.3
 
-### Changed
+### Patch Changes
 
 - Initial release of composite action
 
 ## 0.0.2
 
-### Changed
+### Patch Changes
 
 - Initial release of composite action
 
 ## 0.0.1
 
-### Added
+### Patch Changes
 
 - Initial release of composite action
