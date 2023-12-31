@@ -91,3 +91,6 @@ This action leverages these projects:
 - <a href="https://github.com/dotnet-outdated/dotnet-outdated">dotnet-outdated</a>
 - <a href="https://github.com/MeilCli/npm-update-check-action">npm-update-check-action</a>
 - <a href="https://github.com/thollander/actions-comment-pull-request">actions-comment-pull-request</a>
+
+## Contribute
+Please [create a pull request](https://github.com/trossr32/outdated-packages-action/compare) and get in touch. Alternatively feel free to [raise an issue](https://github.com/trossr32/outdated-packages-action/issues/new/choose) if you've found a bug or want to suggest a new feature.
