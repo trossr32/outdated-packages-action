@@ -68,15 +68,19 @@ jobs:
 
 ## Example output
 
-#### dotnet-outdated
+#### dotnet packages are outdated
 
 ![dotnet-outdated](./assets/dotnet-outdated-example.png)
 
+#### dotnet packages up to date
+
 ![dotnet-not-outdated](./assets/dotnet-not-outdated-example.png)
 
-#### npm-outdated
+#### npm packages are outdated
 
 ![npm-outdated](./assets/npm-outdated-example.png)
+
+#### npm packages up to date
 
 ![npm-not-outdated](./assets/npm-not-outdated-example.png)
 
