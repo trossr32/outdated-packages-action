@@ -96,13 +96,13 @@ runs:
       run: |
         if [[ "${{ steps.npm-outdated-check.outputs.has_npm_update }}" = "false" ]]; then
             printf "## No outdated npm packages found :rocket:" >> npm_outdated.md
-            echo "skip-comment='${{ inputs.hide-successful-checks }}'" >> $GITHUB_OUTPUT
+            echo "skip-comment=${{ inputs.hide-successful-checks }}" >> $GITHUB_OUTPUT
         else
             printf "${{ steps.npm-outdated-check.outputs.npm_update_text }}" >> npm_outdated.md
             echo ' ' | cat - npm_outdated.md > temp && mv temp npm_outdated.md
             echo '> Outdated npm packages found, update if possible. Run ```npm outdated``` in the terminal to view locally.' | cat - npm_outdated.md > temp && mv temp npm_outdated.md
             echo '> [!WARNING]' | cat - npm_outdated.md > temp && mv temp npm_outdated.md
-            echo "skip-comment='false'" >> $GITHUB_OUTPUT
+            echo "skip-comment=false" >> $GITHUB_OUTPUT
         fi
 
     - name: NPM outdated PR comment
@@ -151,16 +151,16 @@ runs:
 
         if [[ $OUTPUT =~ "No outdated dependencies" ]]; then
             printf "## No outdated nuget packages found :rocket:" >> outdated.md
-            echo "skip-comment='${{ inputs.hide-successful-checks }}'" >> $GITHUB_OUTPUT
+            echo "skip-comment=${{ inputs.hide-successful-checks }}" >> $GITHUB_OUTPUT
         elif [[ $OUTPUT =~ "Errors occurred" ]]; then
             echo '> Are you sure you can connect to all your configured NuGet servers?' | cat - outdated.md > temp && mv temp outdated.md
             echo '> Failure when checking for outdated nuget packages' | cat - outdated.md > temp && mv temp outdated.md
             echo '> [!CAUTION]' | cat - outdated.md > temp && mv temp outdated.md
-            echo "skip-comment='false'" >> $GITHUB_OUTPUT
+            echo "skip-comment=false" >> $GITHUB_OUTPUT
         else
             echo '> Outdated nuget packages found, update if possible' | cat - outdated.md > temp && mv temp outdated.md
             echo '> [!WARNING]' | cat - outdated.md > temp && mv temp outdated.md
-            echo "skip-comment='false'" >> $GITHUB_OUTPUT
+            echo "skip-comment=false" >> $GITHUB_OUTPUT
         fi
 
     - name: test
