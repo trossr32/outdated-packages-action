@@ -20,6 +20,12 @@ inputs:
     required: false
     default: ''
 
+  # exclude nuget packages from the check
+  dotnet-exclude-packages:
+    description: Exclude nuget packages from the check
+    required: false
+    type: array
+
   # use npm outdated
   use-npm-outdated:
     description: Use npm outdated
@@ -114,9 +120,25 @@ runs:
       id: dotnet-outdated
       shell: bash
       run: |
-        echo "dotnet outdated ${{ inputs.dotnet-solution-or-project-path }} -of Markdown -o outdated.md -ifs"
+        exclusions=""
 
-        OUTPUT=`dotnet outdated ${{ inputs.dotnet-solution-or-project-path }} -of Markdown -o outdated.md -ifs`
+        if [[ ${{ inputs.dotnet-exclude-packages }} != "" ]]; then
+            # Convert the string into an array
+            IFS=' ' read -r -a array <<< "${{ inputs.dotnet-exclude-packages }}"
+
+            # Loop through each element of the array
+            for element in "${array[@]}"
+            do
+                # Append "-exc" and the element to the result string
+                exclusions+="-exc $element "
+            done
+        fi
+
+        cmd="dotnet outdated $repo -of Markdown -o outdated.md -ifs $exclusions"
+
+        echo $cmd
+
+        OUTPUT=`eval $cmd`
         echo "$OUTPUT"
 
         if [[ $OUTPUT =~ "No outdated dependencies" ]]; then
@@ -129,8 +151,6 @@ runs:
             echo '> Outdated nuget packages found, update if possible' | cat - outdated.md > temp && mv temp outdated.md
             echo '> [!WARNING]' | cat - outdated.md > temp && mv temp outdated.md
         fi
-
-        # echo "$(<outdated.md )"
 
     - name: Dotnet outdated PR comment
       if: ${{ inputs.use-dotnet-outdated == 'true' }}

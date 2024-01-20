@@ -28,6 +28,10 @@ This action will run either or both of:
 
 **Optional** - The path to the dotnet solution file. Required if `use-dotnet-outdated` is `true`.
 
+#### `dotnet-exclude-packages`
+
+**Optional** - Names of packages to exclude from the check. Optional if `use-dotnet-outdated` is `true`.
+
 #### `use-npm-outdated`
 
 **Optional** - Whether to run npm-update-check-action. Default `false`.
@@ -63,6 +67,8 @@ jobs:
           use-dotnet-outdated: true
           # The path to the dotnet solution or project file. Required if use-dotnet-outdated is true.
           dotnet-solution-or-project-path: ${{ env.SOLUTION_PATH }}
+          # Names of packages to exclude from the check. Optional if use-dotnet-outdated is true.
+          dotnet-exclude-packages: Microsoft.VisualStudio.Azure.Containers.Tools.Targets MyPackage.DoNotCheck
           # Whether to run npm-update-check-action. Default is false if not supplied.
           use-npm-outdated: true
           # The path to the npm project directory.

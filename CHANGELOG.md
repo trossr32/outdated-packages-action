@@ -1,10 +1,16 @@
 # outdated-packages-action
 
+## 1.4.0
+
+### Patch Changes
+
+- Add dotnet exclude packages option
+
 ## 1.3.0
 
 ### Patch Changes
 
-- Bupm version to 1.3.0
+- Bump version to 1.3.0
 
 ## 1.2.0
 
