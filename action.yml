@@ -77,7 +77,6 @@ runs:
     - name: Create npm outdated comment
       if: ${{ inputs.use-npm-outdated == 'true' }}
       id: npm-outdated-comment
-      continue-on-error: true
       working-directory: ${{ inputs.npm-project-directory }}
       shell: bash
       run: |
@@ -113,7 +112,6 @@ runs:
     - name: Run outdated script
       if: ${{ inputs.use-dotnet-outdated == 'true' }}
       id: dotnet-outdated
-      continue-on-error: true
       shell: bash
       run: |
         echo "dotnet outdated ${{ inputs.dotnet-solution-or-project-path }} -of Markdown -o outdated.md -ifs"
@@ -124,6 +122,7 @@ runs:
         if [[ $OUTPUT =~ "No outdated dependencies" ]]; then
             printf "## No outdated nuget packages found :rocket:" >> outdated.md
         elif [[ $OUTPUT =~ "Errors occurred" ]]; then
+            echo '> Are you sure you can connect to all your configured NuGet servers?' | cat - outdated.md > temp && mv temp outdated.md
             echo '> Failure when checking for outdated nuget packages' | cat - outdated.md > temp && mv temp outdated.md
             echo '> [!CAUTION]' | cat - outdated.md > temp && mv temp outdated.md
         else
