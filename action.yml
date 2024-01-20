@@ -126,7 +126,7 @@ runs:
         elif [[ $OUTPUT =~ "Errors occurred" ]]; then
             echo '> Failure when checking for outdated nuget packages" | cat - outdated.md > temp && mv temp outdated.md
             echo '> [!CAUTION]\r\n> Failure when checking for outdated nuget packages' | cat - outdated.md > temp && mv temp outdated.md
-            echo "SHOULD_FAIL=true" >> "$GITHUB_OUTPUT"
+            echo "SHOULD_FAIL=false" >> "$GITHUB_OUTPUT"
         else
             echo '> Outdated nuget packages found, update if possible' | cat - outdated.md > temp && mv temp outdated.md
             echo '> [!WARNING]' | cat - outdated.md > temp && mv temp outdated.md

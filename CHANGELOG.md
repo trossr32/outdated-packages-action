@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 1.1.3
+
+### Patch Changes
+
+- Don't fail dotnet outdated if there is a source nuget error
+
 ## 1.1.2
 
 ### Patch Changes
