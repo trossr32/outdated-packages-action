@@ -22,9 +22,9 @@ inputs:
 
   # exclude nuget packages from the check
   dotnet-exclude-packages:
-    description: Exclude nuget packages from the check
+    description: Exclude nuget packages from the check. Space delimited string of package names, e.g. "Microsoft.Extensions.Logging Microsoft.Extensions.Logging.Abstractions"
     required: false
-    type: array
+    default: ''
 
   # use npm outdated
   use-npm-outdated:
@@ -38,6 +38,12 @@ inputs:
     required: false
     default: '.'
 
+  # don't add a success comment to the PR when checks are successful
+  hide-successful-checks:
+    description: Don't add a success comment to the PR when checks are successful.
+    required: false
+    default: 'false'
+
 runs:
   using: composite
   steps:
@@ -49,8 +55,10 @@ runs:
       run: |
         echo "use-dotnet-outdated:              ${{ inputs.use-dotnet-outdated }}"
         echo "dotnet-solution-or-project-path:  ${{ inputs.dotnet-solution-or-project-path }}"
+        echo "dotnet-exclude-packages:          ${{ inputs.dotnet-exclude-packages }}"
         echo "use-npm-outdated:                 ${{ inputs.use-npm-outdated }}"
         echo "npm-project-directory:            ${{ inputs.npm-project-directory }}"
+        echo "hide-successful-checks:           ${{ inputs.hide-successful-checks }}"
 
         if ([[ "${{ inputs.use-dotnet-outdated }}" == 'true' ]] && [[ -z "${{ inputs.dotnet-solution-or-project-path }}" ]]); then
           echo "dotnet-solution-or-project-path is empty"; error=true;
@@ -82,23 +90,23 @@ runs:
 
     - name: Create npm outdated comment
       if: ${{ inputs.use-npm-outdated == 'true' }}
-      id: npm-outdated-comment
+      id: npm-outdated
       working-directory: ${{ inputs.npm-project-directory }}
       shell: bash
       run: |
         if [[ "${{ steps.npm-outdated-check.outputs.has_npm_update }}" = "false" ]]; then
             printf "## No outdated npm packages found :rocket:" >> npm_outdated.md
-            exit 0
+            echo "skip-comment='${{ inputs.hide-successful-checks }}'" >> $GITHUB_OUTPUT
         else
             printf "${{ steps.npm-outdated-check.outputs.npm_update_text }}" >> npm_outdated.md
             echo ' ' | cat - npm_outdated.md > temp && mv temp npm_outdated.md
             echo '> Outdated npm packages found, update if possible. Run ```npm outdated``` in the terminal to view locally.' | cat - npm_outdated.md > temp && mv temp npm_outdated.md
             echo '> [!WARNING]' | cat - npm_outdated.md > temp && mv temp npm_outdated.md
-            exit 0
+            echo "skip-comment='false'" >> $GITHUB_OUTPUT
         fi
 
     - name: NPM outdated PR comment
-      if: ${{ inputs.use-npm-outdated == 'true' }}
+      if: ${{ inputs.use-npm-outdated == 'true' && steps.npm-outdated.outputs.skip-comment == 'false' }}
       uses: thollander/actions-comment-pull-request@v2
       with:
         filePath: "${{ inputs.npm-project-directory }}/npm_outdated.md"
@@ -143,17 +151,20 @@ runs:
 
         if [[ $OUTPUT =~ "No outdated dependencies" ]]; then
             printf "## No outdated nuget packages found :rocket:" >> outdated.md
+            echo "skip-comment='${{ inputs.hide-successful-checks }}'" >> $GITHUB_OUTPUT
         elif [[ $OUTPUT =~ "Errors occurred" ]]; then
             echo '> Are you sure you can connect to all your configured NuGet servers?' | cat - outdated.md > temp && mv temp outdated.md
             echo '> Failure when checking for outdated nuget packages' | cat - outdated.md > temp && mv temp outdated.md
             echo '> [!CAUTION]' | cat - outdated.md > temp && mv temp outdated.md
+            echo "skip-comment='false'" >> $GITHUB_OUTPUT
         else
             echo '> Outdated nuget packages found, update if possible' | cat - outdated.md > temp && mv temp outdated.md
             echo '> [!WARNING]' | cat - outdated.md > temp && mv temp outdated.md
+            echo "skip-comment='false'" >> $GITHUB_OUTPUT
         fi
 
     - name: Dotnet outdated PR comment
-      if: ${{ inputs.use-dotnet-outdated == 'true' }}
+      if: ${{ inputs.use-dotnet-outdated == 'true' && steps.dotnet-outdated.outputs.skip-comment == 'false' }}
       uses: thollander/actions-comment-pull-request@v2
       with:
         filePath: "outdated.md"

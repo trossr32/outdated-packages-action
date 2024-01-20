@@ -30,7 +30,7 @@ This action will run either or both of:
 
 #### `dotnet-exclude-packages`
 
-**Optional** - Names of packages to exclude from the check. Optional if `use-dotnet-outdated` is `true`.
+**Optional** - Names of packages to exclude from the check. Optional if `use-dotnet-outdated` is `true`. Space delimited string of package names, e.g. "Microsoft.Extensions.Logging Microsoft.Extensions.Logging.Abstractions"
 
 #### `use-npm-outdated`
 
@@ -39,6 +39,10 @@ This action will run either or both of:
 #### `npm-project-directory`
 
 **Optional** - The path to the npm project directory. Default `.`.
+
+#### `hide-successful-checks`
+
+**Optional** - Don't add a success comment to the PR when checks are successful. Default `false`.
 
 ## Example github action 
 
@@ -61,19 +65,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: trossr32/outdated-packages-action@v1.1.0
+      - uses: trossr32/outdated-packages-action@v1.5.0
         with:
           # Whether to run dotnet-outdated. Default is false if not supplied.
           use-dotnet-outdated: true
+
           # The path to the dotnet solution or project file. Required if use-dotnet-outdated is true.
           dotnet-solution-or-project-path: ${{ env.SOLUTION_PATH }}
+
           # Names of packages to exclude from the check. Optional if use-dotnet-outdated is true.
-          dotnet-exclude-packages: Microsoft.VisualStudio.Azure.Containers.Tools.Targets MyPackage.DoNotCheck
+          # Space delimited string of package names, e.g. "Microsoft.Extensions.Logging Microsoft.Extensions.Logging.Abstractions"
+          dotnet-exclude-packages: 'Microsoft.VisualStudio.Azure.Containers.Tools.Targets MyPackage.DoNotCheck'
+
           # Whether to run npm-update-check-action. Default is false if not supplied.
           use-npm-outdated: true
+
           # The path to the npm project directory.
           # Default is '.', so only required if the npm project is not the root of the repository.
           npm-project-directory: ${{ env.PROJECT_DIR }}
+
+          # Don't add a success comment to the PR when checks are successful. Default is false if not supplied.
+          hide-successful-checks: false
 ```
 
 ## Example output

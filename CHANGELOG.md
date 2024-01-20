@@ -1,5 +1,12 @@
 # outdated-packages-action
 
+## 1.5.0
+
+### Minor Changes
+
+- Convert dotnet-exclude-packages to string
+- Add hide-successful-checks option
+
 ## 1.4.2
 
 ### Patch Changes
@@ -14,19 +21,19 @@
 
 ## 1.4.0
 
-### Patch Changes
+### Minor Changes
 
 - Add dotnet exclude packages option
 
 ## 1.3.0
 
-### Patch Changes
+### Minor Changes
 
 - Bump version to 1.3.0
 
 ## 1.2.0
 
-### Patch Changes
+### Minor Changes
 
 - Bug fixes and refactor
 
