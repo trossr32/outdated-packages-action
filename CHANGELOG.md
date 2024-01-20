@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 1.1.1
+
+### Patch Changes
+
+- Fix nuget comment alert
+
 ## 1.1.0
 
 ### Minor Changes

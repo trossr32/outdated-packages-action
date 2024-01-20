@@ -15,8 +15,14 @@ inputs:
     default: 'false'
 
   # required for dotnet outdated
-  dotnet-solution-path:
-    description: Path of the solution file
+  dotnet-solution-or-project-path:
+    description: Path of the dotnet solution or project file
+    required: false
+    default: ''
+
+  # exclude packages from dotnet outdated
+  dotnet-exclude:
+    description: Exclude packages from dotnet outdated
     required: false
     default: ''
 
@@ -115,17 +121,17 @@ runs:
       id: dotnet-outdated
       shell: bash
       run: |
-        echo "dotnet outdated ${{ inputs.dotnet-solution-path }} -of Markdown -o outdated.md"
+        echo "dotnet outdated ${{ inputs.dotnet-solution-path }} -of Markdown -o outdated.md -ifs"
 
-        OUTPUT=`dotnet outdated ${{ inputs.dotnet-solution-path }} -of Markdown -o outdated.md`
+        OUTPUT=`dotnet outdated ${{ inputs.dotnet-solution-path }} -of Markdown -o outdated.md -ifs`
         echo "$OUTPUT"
 
         if [[ $OUTPUT =~ "No outdated dependencies" ]]; then
             printf "## No outdated nuget packages found :rocket:" >> outdated.md
             echo "SHOULD_FAIL=false" >> "$GITHUB_OUTPUT"
         elif [[ $OUTPUT =~ "Errors occurred" ]]; then
-            printf "> Failure when checking for outdated nuget packages" >> outdated.md
-            echo '> [!CAUTION]' | cat - outdated.md > temp && mv temp outdated.md
+            echo '> Failure when checking for outdated nuget packages" | cat - outdated.md > temp && mv temp outdated.md
+            echo '> [!CAUTION]\r\n> Failure when checking for outdated nuget packages' | cat - outdated.md > temp && mv temp outdated.md
             echo "SHOULD_FAIL=true" >> "$GITHUB_OUTPUT"
         else
             echo '> Outdated nuget packages found, update if possible' | cat - outdated.md > temp && mv temp outdated.md
