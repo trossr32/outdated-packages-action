@@ -123,18 +123,15 @@ runs:
 
         if [[ $OUTPUT =~ "No outdated dependencies" ]]; then
             printf "## No outdated nuget packages found :rocket:" >> outdated.md
-            exit 0
         elif [[ $OUTPUT =~ "Errors occurred" ]]; then
-            echo '> Failure when checking for outdated nuget packages" | cat - outdated.md > temp && mv temp outdated.md
+            echo '> Failure when checking for outdated nuget packages' | cat - outdated.md > temp && mv temp outdated.md
             echo '> [!CAUTION]' | cat - outdated.md > temp && mv temp outdated.md
-            exit 0
         else
             echo '> Outdated nuget packages found, update if possible' | cat - outdated.md > temp && mv temp outdated.md
             echo '> [!WARNING]' | cat - outdated.md > temp && mv temp outdated.md
-            exit 0
         fi
-        
-        exit 0
+
+        # echo "$(<outdated.md )"
 
     - name: Dotnet outdated PR comment
       if: ${{ inputs.use-dotnet-outdated == 'true' }}
