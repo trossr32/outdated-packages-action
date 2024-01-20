@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 1.6.0
+
+### Minor Changes
+
+- New release version with bugs fixed
+
 ## 1.5.3
 
 ### Patch Changes

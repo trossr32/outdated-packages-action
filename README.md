@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: trossr32/outdated-packages-action@v1.5.0
+      - uses: trossr32/outdated-packages-action@v1.6.0
         with:
           # Whether to run dotnet-outdated. Default is false if not supplied.
           use-dotnet-outdated: true
