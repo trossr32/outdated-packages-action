@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 1.5.1
+
+### Patch Changes
+
+- Fix syntax error
+
 ## 1.5.0
 
 ### Minor Changes
