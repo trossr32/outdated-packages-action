@@ -1,11 +1,11 @@
 # outdated-packages-action
-Github action for reporting on outdated dotnet packages in a solution or npm packages in a project directory.
+Github action for reporting on outdated dotnet packages in a solution or project, or npm packages in a project directory.
 
 ## Overview
 
 This action will run either or both of: 
 
-- <a href="https://github.com/dotnet-outdated/dotnet-outdated">dotnet-outdated</a> against a supplied dotnet solution
+- <a href="https://github.com/dotnet-outdated/dotnet-outdated">dotnet-outdated</a> against a supplied dotnet solution or project
 - <a href="https://github.com/MeilCli/npm-update-check-action">npm-update-check-action</a> against a supplied npm project directory
 
 > [!NOTE]
@@ -26,7 +26,7 @@ This action will run either or both of:
 
 #### `dotnet-solution-or-project-path`
 
-**Optional** - The path to the dotnet solution file. Required if `use-dotnet-outdated` is `true`.
+**Optional** - The path to the dotnet solution or project file. Required if `use-dotnet-outdated` is `true`.
 
 #### `dotnet-exclude-packages`
 
@@ -42,7 +42,7 @@ This action will run either or both of:
 
 #### `hide-successful-checks`
 
-**Optional** - Don't add a success comment to the PR when checks are successful. Default `false`.
+**Optional** - When true, don't add a success comment to the PR when checks are successful. Default `false`.
 
 ## Example github action 
 
@@ -59,6 +59,7 @@ on:
 env:
   SOLUTION_PATH: 'src/RobGreenEngineering.sln'
   PROJECT_DIR: 'src/RobGreenEngineering'
+  EXCLUDE_PACKAGES: 'Microsoft.Extensions.Logging Microsoft.Extensions.Logging.Abstractions'
 
 jobs:
   outdated-packages-check:
@@ -75,7 +76,7 @@ jobs:
 
           # Names of packages to exclude from the check. Optional if use-dotnet-outdated is true.
           # Space delimited string of package names, e.g. "Microsoft.Extensions.Logging Microsoft.Extensions.Logging.Abstractions"
-          dotnet-exclude-packages: 'Microsoft.VisualStudio.Azure.Containers.Tools.Targets MyPackage.DoNotCheck'
+          dotnet-exclude-packages: ${{ env.EXCLUDE_PACKAGES }}
 
           # Whether to run npm-update-check-action. Default is false if not supplied.
           use-npm-outdated: true
@@ -84,7 +85,7 @@ jobs:
           # Default is '.', so only required if the npm project is not the root of the repository.
           npm-project-directory: ${{ env.PROJECT_DIR }}
 
-          # Don't add a success comment to the PR when checks are successful. Default is false if not supplied.
+          # When true, don't add a success comment to the PR when checks are successful. Default is false if not supplied.
           hide-successful-checks: false
 ```
 
