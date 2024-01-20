@@ -163,6 +163,12 @@ runs:
             echo "skip-comment='false'" >> $GITHUB_OUTPUT
         fi
 
+    - name: test
+      if: ${{ inputs.use-dotnet-outdated == 'true' }}
+      shell: bash
+      run: |
+        echo "skip-comment: '${{ steps.dotnet-outdated.outputs.skip-comment }}'"
+
     - name: Dotnet outdated PR comment
       if: ${{ inputs.use-dotnet-outdated == 'true' && steps.dotnet-outdated.outputs.skip-comment == 'false' }}
       uses: thollander/actions-comment-pull-request@v2
