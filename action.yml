@@ -134,7 +134,7 @@ runs:
             done
         fi
 
-        cmd="dotnet outdated $repo -of Markdown -o outdated.md -ifs $exclusions"
+        cmd="dotnet outdated ${{ inputs.dotnet-solution-or-project-path }} -of Markdown -o outdated.md -ifs $exclusions"
 
         echo $cmd
 

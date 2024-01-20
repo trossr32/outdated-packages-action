@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 1.4.1
+
+### Patch Changes
+
+- Fix missing outdated path
+
 ## 1.4.0
 
 ### Patch Changes
