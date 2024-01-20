@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 1.3.0
+
+### Patch Changes
+
+- Bupm version to 1.3.0
+
 ## 1.2.0
 
 ### Patch Changes
