@@ -24,7 +24,7 @@ This action will run either or both of:
 
 **Optional** - Whether to run dotnet-outdated. Default `false`.
 
-#### `dotnet-solution-path`
+#### `dotnet-solution-or-project-path`
 
 **Optional** - The path to the dotnet solution file. Required if `use-dotnet-outdated` is `true`.
 
@@ -61,8 +61,8 @@ jobs:
         with:
           # Whether to run dotnet-outdated. Default is false if not supplied.
           use-dotnet-outdated: true
-          # The path to the dotnet solution file. Required if use-dotnet-outdated is true.
-          dotnet-solution-path: ${{ env.SOLUTION_PATH }}
+          # The path to the dotnet solution or project file. Required if use-dotnet-outdated is true.
+          dotnet-solution-or-project-path: ${{ env.SOLUTION_PATH }}
           # Whether to run npm-update-check-action. Default is false if not supplied.
           use-npm-outdated: true
           # The path to the npm project directory.

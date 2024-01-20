@@ -20,12 +20,6 @@ inputs:
     required: false
     default: ''
 
-  # exclude packages from dotnet outdated
-  dotnet-exclude:
-    description: Exclude packages from dotnet outdated
-    required: false
-    default: ''
-
   # use npm outdated
   use-npm-outdated:
     description: Use npm outdated
@@ -47,13 +41,13 @@ runs:
     - name: Validate action inputs
       shell: bash
       run: |
-        echo "use-dotnet-outdated:   ${{ inputs.use-dotnet-outdated }}"
-        echo "dotnet-solution-path:  ${{ inputs.dotnet-solution-path }}"
-        echo "use-npm-outdated:      ${{ inputs.use-npm-outdated }}"
-        echo "npm-project-directory: ${{ inputs.npm-project-directory }}"
+        echo "use-dotnet-outdated:              ${{ inputs.use-dotnet-outdated }}"
+        echo "dotnet-solution-or-project-path:  ${{ inputs.dotnet-solution-or-project-path }}"
+        echo "use-npm-outdated:                 ${{ inputs.use-npm-outdated }}"
+        echo "npm-project-directory:            ${{ inputs.npm-project-directory }}"
 
-        if ([[ "${{ inputs.use-dotnet-outdated }}" == 'true' ]] && [[ -z "${{ inputs.dotnet-solution-path }}" ]]); then
-          echo "dotnet-solution-path is empty"; error=true;
+        if ([[ "${{ inputs.use-dotnet-outdated }}" == 'true' ]] && [[ -z "${{ inputs.dotnet-solution-or-project-path }}" ]]); then
+          echo "dotnet-solution-or-project-path is empty"; error=true;
         fi
 
         if ([[ "${{ inputs.npm-project-directory }}" == 'true' ]] && [[ -z "${{ inputs.npm-project-directory }}" ]]); then
@@ -109,7 +103,7 @@ runs:
     - name: Restore packages
       if: ${{ inputs.use-dotnet-outdated == 'true' }}
       shell: bash
-      run: dotnet restore ${{ inputs.dotnet-solution-path }}
+      run: dotnet restore ${{ inputs.dotnet-solution-or-project-path }}
 
     - name: Install dotnet outdated tool
       if: ${{ inputs.use-dotnet-outdated == 'true' }}
@@ -121,9 +115,9 @@ runs:
       id: dotnet-outdated
       shell: bash
       run: |
-        echo "dotnet outdated ${{ inputs.dotnet-solution-path }} -of Markdown -o outdated.md -ifs"
+        echo "dotnet outdated ${{ inputs.dotnet-solution-or-project-path }} -of Markdown -o outdated.md -ifs"
 
-        OUTPUT=`dotnet outdated ${{ inputs.dotnet-solution-path }} -of Markdown -o outdated.md -ifs`
+        OUTPUT=`dotnet outdated ${{ inputs.dotnet-solution-or-project-path }} -of Markdown -o outdated.md -ifs`
         echo "$OUTPUT"
 
         if [[ $OUTPUT =~ "No outdated dependencies" ]]; then

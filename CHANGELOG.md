@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 1.1.2
+
+### Patch Changes
+
+- Dotnet outdated can run against sln or proj files
+
 ## 1.1.1
 
 ### Patch Changes
