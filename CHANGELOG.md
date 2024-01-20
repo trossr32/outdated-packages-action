@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 1.1.5
+
+### Patch Changes
+
+- Add `continue-on-error: true`
+
 ## 1.1.4
 
 ### Patch Changes

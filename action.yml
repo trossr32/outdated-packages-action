@@ -77,20 +77,18 @@ runs:
     - name: Create npm outdated comment
       if: ${{ inputs.use-npm-outdated == 'true' }}
       id: npm-outdated-comment
+      continue-on-error: true
       working-directory: ${{ inputs.npm-project-directory }}
       shell: bash
       run: |
         if [[ "${{ steps.npm-outdated-check.outputs.has_npm_update }}" = "false" ]]; then
             printf "## No outdated npm packages found :rocket:" >> npm_outdated.md
-            echo "NPM_SHOULD_FAIL=false" >> "$GITHUB_OUTPUT"
             exit 0
         else
             printf "${{ steps.npm-outdated-check.outputs.npm_update_text }}" >> npm_outdated.md
             echo ' ' | cat - npm_outdated.md > temp && mv temp npm_outdated.md
             echo '> Outdated npm packages found, update if possible. Run ```npm outdated``` in the terminal to view locally.' | cat - npm_outdated.md > temp && mv temp npm_outdated.md
             echo '> [!WARNING]' | cat - npm_outdated.md > temp && mv temp npm_outdated.md
-
-            echo "NPM_SHOULD_FAIL=false" >> "$GITHUB_OUTPUT"
             exit 0
         fi
 
@@ -115,6 +113,7 @@ runs:
     - name: Run outdated script
       if: ${{ inputs.use-dotnet-outdated == 'true' }}
       id: dotnet-outdated
+      continue-on-error: true
       shell: bash
       run: |
         echo "dotnet outdated ${{ inputs.dotnet-solution-or-project-path }} -of Markdown -o outdated.md -ifs"
@@ -124,19 +123,18 @@ runs:
 
         if [[ $OUTPUT =~ "No outdated dependencies" ]]; then
             printf "## No outdated nuget packages found :rocket:" >> outdated.md
-            echo "SHOULD_FAIL=false" >> "$GITHUB_OUTPUT"
             exit 0
         elif [[ $OUTPUT =~ "Errors occurred" ]]; then
             echo '> Failure when checking for outdated nuget packages" | cat - outdated.md > temp && mv temp outdated.md
             echo '> [!CAUTION]' | cat - outdated.md > temp && mv temp outdated.md
-            echo "SHOULD_FAIL=false" >> "$GITHUB_OUTPUT"
             exit 0
         else
             echo '> Outdated nuget packages found, update if possible' | cat - outdated.md > temp && mv temp outdated.md
             echo '> [!WARNING]' | cat - outdated.md > temp && mv temp outdated.md
-            echo "SHOULD_FAIL=false" >> "$GITHUB_OUTPUT"
             exit 0
         fi
+        
+        exit 0
 
     - name: Dotnet outdated PR comment
       if: ${{ inputs.use-dotnet-outdated == 'true' }}
