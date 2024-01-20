@@ -122,7 +122,7 @@ runs:
       run: |
         exclusions=""
 
-        if [[ ${{ inputs.dotnet-exclude-packages }} != "" ]]; then
+        if [[ "${{ inputs.dotnet-exclude-packages" }} != "" ]]; then
             # Convert the string into an array
             IFS=' ' read -r -a array <<< "${{ inputs.dotnet-exclude-packages }}"
 

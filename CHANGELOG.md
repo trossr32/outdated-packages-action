@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 1.4.2
+
+### Patch Changes
+
+- Fix failure on empty array
+
 ## 1.4.1
 
 ### Patch Changes
