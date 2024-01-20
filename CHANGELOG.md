@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 1.1.4
+
+### Patch Changes
+
+- Set exit codes to 0
+
 ## 1.1.3
 
 ### Patch Changes

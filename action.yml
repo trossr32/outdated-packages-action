@@ -83,6 +83,7 @@ runs:
         if [[ "${{ steps.npm-outdated-check.outputs.has_npm_update }}" = "false" ]]; then
             printf "## No outdated npm packages found :rocket:" >> npm_outdated.md
             echo "NPM_SHOULD_FAIL=false" >> "$GITHUB_OUTPUT"
+            exit 0
         else
             printf "${{ steps.npm-outdated-check.outputs.npm_update_text }}" >> npm_outdated.md
             echo ' ' | cat - npm_outdated.md > temp && mv temp npm_outdated.md
@@ -90,6 +91,7 @@ runs:
             echo '> [!WARNING]' | cat - npm_outdated.md > temp && mv temp npm_outdated.md
 
             echo "NPM_SHOULD_FAIL=false" >> "$GITHUB_OUTPUT"
+            exit 0
         fi
 
     - name: NPM outdated PR comment
@@ -123,14 +125,17 @@ runs:
         if [[ $OUTPUT =~ "No outdated dependencies" ]]; then
             printf "## No outdated nuget packages found :rocket:" >> outdated.md
             echo "SHOULD_FAIL=false" >> "$GITHUB_OUTPUT"
+            exit 0
         elif [[ $OUTPUT =~ "Errors occurred" ]]; then
             echo '> Failure when checking for outdated nuget packages" | cat - outdated.md > temp && mv temp outdated.md
-            echo '> [!CAUTION]\r\n> Failure when checking for outdated nuget packages' | cat - outdated.md > temp && mv temp outdated.md
+            echo '> [!CAUTION]' | cat - outdated.md > temp && mv temp outdated.md
             echo "SHOULD_FAIL=false" >> "$GITHUB_OUTPUT"
+            exit 0
         else
             echo '> Outdated nuget packages found, update if possible' | cat - outdated.md > temp && mv temp outdated.md
             echo '> [!WARNING]' | cat - outdated.md > temp && mv temp outdated.md
             echo "SHOULD_FAIL=false" >> "$GITHUB_OUTPUT"
+            exit 0
         fi
 
     - name: Dotnet outdated PR comment
