@@ -64,6 +64,9 @@ env:
 jobs:
   outdated-packages-check:
     runs-on: ubuntu-latest
+    # grant pull request write permission if 'Read and write permissions' is not active for actions in the repository
+    permissions:
+      pull-requests: write
 
     steps:
       - uses: trossr32/outdated-packages-action@v1.6.0
