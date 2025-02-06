@@ -32,6 +32,10 @@ This action will run either or both of:
 
 **Optional** - Names of packages to exclude from the check. Optional if `use-dotnet-outdated` is `true`. Space delimited string of package names, e.g. "Microsoft.Extensions.Logging Microsoft.Extensions.Logging.Abstractions"
 
+#### `dotnet-version`
+
+**Optional** - The version of dotnet to use. Default `8.*.*`.
+
 #### `use-npm-outdated`
 
 **Optional** - Whether to run npm-update-check-action. Default `false`.
@@ -66,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: trossr32/outdated-packages-action@v1.6.0
+      - uses: trossr32/outdated-packages-action@v1.7.0
         with:
           # Whether to run dotnet-outdated. Default is false if not supplied.
           use-dotnet-outdated: true
@@ -77,6 +81,9 @@ jobs:
           # Names of packages to exclude from the check. Optional if use-dotnet-outdated is true.
           # Space delimited string of package names, e.g. "Microsoft.Extensions.Logging Microsoft.Extensions.Logging.Abstractions"
           dotnet-exclude-packages: ${{ env.EXCLUDE_PACKAGES }}
+
+          # The version of dotnet to use. Default is 8.*.*.
+          dotnet-version: '9.*.*'
 
           # Whether to run npm-update-check-action. Default is false if not supplied.
           use-npm-outdated: true
@@ -114,6 +121,7 @@ This action leverages these projects:
 - <a href="https://github.com/dotnet-outdated/dotnet-outdated">dotnet-outdated</a>
 - <a href="https://github.com/MeilCli/npm-update-check-action">npm-update-check-action</a>
 - <a href="https://github.com/thollander/actions-comment-pull-request">actions-comment-pull-request</a>
+- <a href="https://github.com/actions/setup-dotnet">setup-dotnet</a>
 
 ## Contribute
 Please [create a pull request](https://github.com/trossr32/outdated-packages-action/compare) and get in touch. Alternatively feel free to [raise an issue](https://github.com/trossr32/outdated-packages-action/issues/new/choose) if you've found a bug or want to suggest a new feature.

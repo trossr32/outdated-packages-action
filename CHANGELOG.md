@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 1.7.0
+
+### Minor Changes
+
+- Add dotnet version option
+
 ## 1.6.0
 
 ### Minor Changes
