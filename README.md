@@ -3,17 +3,19 @@ Github action for reporting on outdated dotnet packages in a solution or project
 
 ## Overview
 
-This action will run either or both of: 
+This action will run either or both of:
 
 - <a href="https://github.com/dotnet-outdated/dotnet-outdated">dotnet-outdated</a> against a supplied dotnet solution or project
 - <a href="https://github.com/MeilCli/npm-update-check-action">npm-update-check-action</a> against a supplied npm project directory
 
 > [!NOTE]
 > The intention of this action is purely to notify of any outdated packages and _not_ to perform any kind of update action.
->  
+>
 > Reports for any outdated packages found are added as a comment to the pull request used to run this action.
-> 
+>
 > If the action is re-run against a pull request that has already been commented on, the existing comment will be updated. 
+>
+> `v1.7.0` and `v2.0.0` of this action are functionally identical, except `v1.7.0` defaults to using dotnet `8.*.*` and `v2.0.0` defaults to using dotnet `9.*.*`.
 
 > [!WARNING]
 > This action is designed to be actioned only within the context of a pull request, no other scenarios are catered for.
@@ -34,7 +36,7 @@ This action will run either or both of:
 
 #### `dotnet-version`
 
-**Optional** - The version of dotnet to use. Default `8.*.*`.
+**Optional** - The version of dotnet to use. Default `9.*.*`.
 
 #### `use-npm-outdated`
 
@@ -48,7 +50,7 @@ This action will run either or both of:
 
 **Optional** - When true, don't add a success comment to the PR when checks are successful. Default `false`.
 
-## Example github action 
+## Example github action
 
 outdated.yml
 ```yaml
@@ -73,7 +75,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: trossr32/outdated-packages-action@v1.7.0
+      - uses: trossr32/outdated-packages-action@v2.0.0
         with:
           # Whether to run dotnet-outdated. Default is false if not supplied.
           use-dotnet-outdated: true
@@ -85,7 +87,7 @@ jobs:
           # Space delimited string of package names, e.g. "Microsoft.Extensions.Logging Microsoft.Extensions.Logging.Abstractions"
           dotnet-exclude-packages: ${{ env.EXCLUDE_PACKAGES }}
 
-          # The version of dotnet to use. Default is 8.*.*.
+          # The version of dotnet to use. Default is 9.*.*.
           dotnet-version: '9.*.*'
 
           # Whether to run npm-update-check-action. Default is false if not supplied.

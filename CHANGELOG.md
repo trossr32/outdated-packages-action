@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 2.0.0
+
+### Major Changes
+
+- Change default dotnet version to 9.0.0
+
 ## 1.7.0
 
 ### Minor Changes
