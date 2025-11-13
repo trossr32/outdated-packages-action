@@ -1,5 +1,12 @@
 # outdated-packages-action
 
+## 3.0.0
+
+### Major Changes
+
+- Change default dotnet version to 10.0.0
+- Update action dependencies to latest major versions (npm update check now uses node 20)
+
 ## 2.0.0
 
 ### Major Changes
