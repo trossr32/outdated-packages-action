@@ -15,7 +15,8 @@ This action will run either or both of:
 >
 > If the action is re-run against a pull request that has already been commented on, the existing comment will be updated. 
 >
-> `v1.7.0` and `v2.0.0` of this action are functionally identical, except `v1.7.0` defaults to using dotnet `8.*.*` and `v2.0.0` defaults to using dotnet `9.*.*`.
+> `v1.7.0`, `v2.0.0` and `v3.0.0` of this action are functionally identical, except `v1.7.0` defaults to using dotnet `8.*.*`, `v2.0.0` defaults to using dotnet `9.*.*` and `v3.0.0` defaults to using dotnet `10.*.*`.
+> `v3.0.0` also updates action dependencies to latest major versions (npm update check now uses node 20).
 
 > [!WARNING]
 > This action is designed to be actioned only within the context of a pull request, no other scenarios are catered for.
@@ -36,7 +37,7 @@ This action will run either or both of:
 
 #### `dotnet-version`
 
-**Optional** - The version of dotnet to use. Default `9.*.*`.
+**Optional** - The version of dotnet to use. Default `10.*.*`.
 
 #### `use-npm-outdated`
 
@@ -75,7 +76,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: trossr32/outdated-packages-action@v2.0.0
+      - uses: trossr32/outdated-packages-action@v3.0.0
         with:
           # Whether to run dotnet-outdated. Default is false if not supplied.
           use-dotnet-outdated: true
@@ -87,8 +88,8 @@ jobs:
           # Space delimited string of package names, e.g. "Microsoft.Extensions.Logging Microsoft.Extensions.Logging.Abstractions"
           dotnet-exclude-packages: ${{ env.EXCLUDE_PACKAGES }}
 
-          # The version of dotnet to use. Default is 9.*.*.
-          dotnet-version: '9.*.*'
+          # The version of dotnet to use. Default is 10.*.*.
+          dotnet-version: '10.*.*'
 
           # Whether to run npm-update-check-action. Default is false if not supplied.
           use-npm-outdated: true

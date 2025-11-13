@@ -20,11 +20,11 @@ inputs:
     required: false
     default: ''
 
-  # dotnet version, defaults to 9.*.*
+  # dotnet version, defaults to 10.*.*
   dotnet-version:
     description: .NET version to use
     required: false
-    default: '9.*.*'
+    default: '10.*.*'
 
   # exclude nuget packages from the check
   dotnet-exclude-packages:
@@ -53,13 +53,14 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     # Validate action inputs
     - name: Validate action inputs
       shell: bash
       run: |
         echo "use-dotnet-outdated:              ${{ inputs.use-dotnet-outdated }}"
+        echo "dotnet-version:                   ${{ inputs.dotnet-version }}"
         echo "dotnet-solution-or-project-path:  ${{ inputs.dotnet-solution-or-project-path }}"
         echo "dotnet-exclude-packages:          ${{ inputs.dotnet-exclude-packages }}"
         echo "use-npm-outdated:                 ${{ inputs.use-npm-outdated }}"
@@ -88,7 +89,7 @@ runs:
 
     - name: NPM update check
       if: ${{ inputs.use-npm-outdated == 'true' }}
-      uses: MeilCli/npm-update-check-action@v4 
+      uses: MeilCli/npm-update-check-action@v5
       id: npm-outdated-check
       with:
         execute_directories: ${{ inputs.npm-project-directory }}
@@ -113,15 +114,15 @@ runs:
 
     - name: NPM outdated PR comment
       if: ${{ inputs.use-npm-outdated == 'true' && steps.npm-outdated.outputs.skip-comment == 'false' }}
-      uses: thollander/actions-comment-pull-request@v2
+      uses: thollander/actions-comment-pull-request@v3
       with:
-        filePath: "${{ inputs.npm-project-directory }}/npm_outdated.md"
-        comment_tag: npm_outdated
+        file-path: "${{ inputs.npm-project-directory }}/npm_outdated.md"
+        comment-tag: npm_outdated
 
     # Dotnet outdated
     - name: Restore packages
       if: ${{ inputs.use-dotnet-outdated == 'true' }}
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: ${{ inputs.dotnet-version }}
 
@@ -183,7 +184,7 @@ runs:
 
     - name: Dotnet outdated PR comment
       if: ${{ inputs.use-dotnet-outdated == 'true' && steps.dotnet-outdated.outputs.skip-comment == 'false' }}
-      uses: thollander/actions-comment-pull-request@v2
+      uses: thollander/actions-comment-pull-request@v3
       with:
-        filePath: "outdated.md"
-        comment_tag: outdated
+        file-path: "outdated.md"
+        comment-tag: outdated
