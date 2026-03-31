@@ -1,5 +1,11 @@
 # outdated-packages-action
 
+## 3.1.0
+
+### Minor Changes
+
+- Install dotnet-outdated-tool as a local tool instead of global to fix compatibility with ubuntu-slim runners
+
 ## 3.0.0
 
 ### Major Changes

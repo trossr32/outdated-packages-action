@@ -13,10 +13,10 @@ This action will run either or both of:
 >
 > Reports for any outdated packages found are added as a comment to the pull request used to run this action.
 >
-> If the action is re-run against a pull request that has already been commented on, the existing comment will be updated. 
+> If the action is re-run against a pull request that has already been commented on, the existing comment will be updated.
 >
-> `v1.7.0`, `v2.0.0` and `v3.0.0` of this action are functionally identical, except `v1.7.0` defaults to using dotnet `8.*.*`, `v2.0.0` defaults to using dotnet `9.*.*` and `v3.0.0` defaults to using dotnet `10.*.*`.
-> `v3.0.0` also updates action dependencies to latest major versions (npm update check now uses node 20).
+> `v1.7.0`, `v2.0.0` and `v3.x.x` of this action are functionally identical, except `v1.7.0` defaults to using dotnet `8.*.*`, `v2.0.0` defaults to using dotnet `9.*.*` and `v3.x.x` defaults to using dotnet `10.*.*`.
+> `v3.x.x` also updates action dependencies to latest major versions (npm update check now uses node 20).
 
 > [!WARNING]
 > This action is designed to be actioned only within the context of a pull request, no other scenarios are catered for.
