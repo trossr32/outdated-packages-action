@@ -53,7 +53,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     # Validate action inputs
     - name: Validate action inputs
@@ -134,7 +134,9 @@ runs:
     - name: Install dotnet outdated tool
       if: ${{ inputs.use-dotnet-outdated == 'true' }}
       shell: bash
-      run: dotnet tool install --global dotnet-outdated-tool
+      run: |
+        dotnet new tool-manifest --force
+        dotnet tool install dotnet-outdated-tool
 
     - name: Run outdated script
       if: ${{ inputs.use-dotnet-outdated == 'true' }}
@@ -155,7 +157,7 @@ runs:
             done
         fi
 
-        cmd="dotnet outdated ${{ inputs.dotnet-solution-or-project-path }} -of Markdown -o outdated.md -ifs $exclusions"
+        cmd="dotnet tool run dotnet-outdated ${{ inputs.dotnet-solution-or-project-path }} -of Markdown -o outdated.md -ifs $exclusions"
 
         echo $cmd
 
