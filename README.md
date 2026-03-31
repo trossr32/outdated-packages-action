@@ -76,7 +76,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: trossr32/outdated-packages-action@v3.0.0
+      - uses: trossr32/outdated-packages-action@v3
         with:
           # Whether to run dotnet-outdated. Default is false if not supplied.
           use-dotnet-outdated: true
