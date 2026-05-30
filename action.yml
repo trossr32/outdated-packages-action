@@ -122,8 +122,6 @@ runs:
                     | level($v.current; $v.latest) as $lvl
                     | "| \(icon($lvl)) \(.key) | \($v.current // "-") | \($v.wanted // "-") | \($v.latest // "-") | \(if $lvl == "none" then "—" else $lvl end) |"
                 ' npm_outdated.json
-                echo ''
-                echo '🔴 major · 🟠 minor · 🟢 patch (based on current → latest)'
             } > npm_outdated.md
             echo "skip-comment=false" >> $GITHUB_OUTPUT
         fi
