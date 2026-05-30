@@ -146,21 +146,69 @@ jobs:
 
 ## Example output
 
-#### dotnet packages are outdated
+The action posts a comment on the pull request (and updates it in place on re-runs). The examples below are rendered exactly as the comments appear on a PR.
 
-![dotnet-outdated](./assets/dotnet-outdated-example.png)
+### npm — outdated packages found
 
-#### dotnet packages up to date
+#### Outdated npm packages — `playwright tests`
 
-![dotnet-not-outdated](./assets/dotnet-not-outdated-example.png)
+_Reported by [this workflow run](https://github.com/trossr32/outdated-packages-action/actions/runs/123456789)._
 
-#### npm packages are outdated
+> [!WARNING]
+> Outdated npm packages found, update if possible. Run `npm outdated` in the terminal to view locally (with colour).
 
-![npm-outdated](./assets/npm-outdated-example.png)
+| Package | Current | Wanted | Latest | Update |
+| --- | --- | --- | --- | --- |
+| 🔴 left-pad | 1.0.0 | 1.0.5 | 2.1.0 | major |
+| 🟠 chalk | 5.2.0 | 5.3.0 | 5.3.0 | minor |
+| 🟢 lodash | 4.17.20 | 4.17.21 | 4.17.21 | patch |
 
-#### npm packages up to date
+### npm — all packages up to date
 
-![npm-not-outdated](./assets/npm-not-outdated-example.png)
+#### Outdated npm packages — `project root`
+
+_Reported by [this workflow run](https://github.com/trossr32/outdated-packages-action/actions/runs/123456789)._
+
+**No outdated npm packages found** 🚀
+
+### dotnet — outdated packages found
+
+> The nuget table (headings, columns and the colour-coded version) is produced by [dotnet-outdated](https://github.com/dotnet-outdated/dotnet-outdated); the action wraps it with the scope heading and warning below.
+
+#### Outdated nuget packages — `src/RobGreenEngineering.sln`
+
+_Reported by [this workflow run](https://github.com/trossr32/outdated-packages-action/actions/runs/123456789)._
+
+> [!WARNING]
+> Outdated nuget packages found, update if possible
+
+# Outdated Packages
+
+## RobGreenEngineering
+
+### Target:net10.0
+
+|Package|Transitive|Current|Last|Severity|
+|-|-|-:|-:|-:|
+|Microsoft.Extensions.Logging|False|8.0.0|$\textcolor{red}{\textsf{10.0.0}}$|Major|
+|Serilog|False|3.1.1|${\textsf{3.}}\textcolor{yellow}{\textsf{2.0}}$|Minor|
+|Newtonsoft.Json|False|13.0.2|${\textsf{13.0.}}\textcolor{green}{\textsf{3}}$|Patch|
+
+> __Note__
+>
+> 🔴: Major version update or pre-release version. Possible breaking changes.
+>
+> 🟡: Minor version update. Backwards-compatible features added.
+>
+> 🟢: Patch version update. Backwards-compatible bug fixes.
+
+### dotnet — all up to date
+
+#### Outdated nuget packages — `src/RobGreenEngineering.sln`
+
+_Reported by [this workflow run](https://github.com/trossr32/outdated-packages-action/actions/runs/123456789)._
+
+**No outdated nuget packages found** 🚀
 
 ## Credit
 
