@@ -110,15 +110,17 @@ runs:
                     # Split a version into [major, minor, patch], ignoring any pre-release/build suffix.
                     def parts(v): (v // "" | tostring | split("+")[0] | split("-")[0] | split(".") | map(tonumber? // 0));
                     # Classify the current -> latest jump as major / minor / patch.
-                    def severity(cur; lat):
+                    def level(cur; lat):
                         parts(cur) as $c | parts(lat) as $l |
-                        if   ($l[0] // 0) > ($c[0] // 0) then "🔴 major"
-                        elif ($l[1] // 0) > ($c[1] // 0) then "🟠 minor"
-                        elif ($l[2] // 0) > ($c[2] // 0) then "🟢 patch"
-                        else "—" end;
+                        if   ($l[0] // 0) > ($c[0] // 0) then "major"
+                        elif ($l[1] // 0) > ($c[1] // 0) then "minor"
+                        elif ($l[2] // 0) > ($c[2] // 0) then "patch"
+                        else "none" end;
+                    def icon($lvl): {major: "🔴", minor: "🟠", patch: "🟢", none: "—"}[$lvl];
                     to_entries[]
                     | (.value | if type == "array" then .[0] else . end) as $v
-                    | "| \(.key) | \($v.current // "-") | \($v.wanted // "-") | \($v.latest // "-") | \(severity($v.current; $v.latest)) |"
+                    | level($v.current; $v.latest) as $lvl
+                    | "| \(icon($lvl)) \(.key) | \($v.current // "-") | \($v.wanted // "-") | \($v.latest // "-") | \(if $lvl == "none" then "—" else $lvl end) |"
                 ' npm_outdated.json
                 echo ''
                 echo '🔴 major · 🟠 minor · 🟢 patch (based on current → latest)'
