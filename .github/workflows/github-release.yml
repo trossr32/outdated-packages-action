@@ -45,3 +45,31 @@ jobs:
           name: ${{ steps.get-changelog-entry.outputs.last-change-version-v }}
           draft: false
           prerelease: false
+
+      # Move the floating major tag (e.g. v4) to this release so consumers can pin @v4.
+      # Pushing with the default GITHUB_TOKEN does not retrigger this workflow.
+      - name: Update major version tag
+        if: steps.get-changelog-entry.outputs.last-change-entry != ''
+        shell: bash
+        # yamllint disable rule:line-length
+        run: |
+          set -euo pipefail
+
+          version="${{ steps.get-changelog-entry.outputs.last-change-version-v }}"   # e.g. v4.0.0
+
+          if [[ ! "$version" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Changelog version '$version' is not a vMAJOR.MINOR.PATCH release; skipping major tag update."
+            exit 0
+          fi
+
+          major="${version%%.*}"   # v4.0.0 -> v4
+
+          # Guard against being triggered by the major tag itself (prevents any loop).
+          if [[ "${GITHUB_REF_NAME}" == "$major" ]]; then
+            echo "Triggered by the '$major' tag itself; nothing to do."
+            exit 0
+          fi
+
+          echo "Pointing '$major' at ${GITHUB_SHA}"
+          git tag -f "$major" "${GITHUB_SHA}"
+          git push origin -f "refs/tags/$major"
