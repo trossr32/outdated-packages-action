@@ -6,7 +6,7 @@ Github action for reporting on outdated dotnet packages in a solution or project
 This action will run either or both of:
 
 - <a href="https://github.com/dotnet-outdated/dotnet-outdated">dotnet-outdated</a> against a supplied dotnet solution or project
-- <a href="https://github.com/MeilCli/npm-update-check-action">npm-update-check-action</a> against a supplied npm project directory
+- <a href="https://docs.npmjs.com/cli/commands/npm-outdated">npm outdated</a> against a supplied npm project directory
 
 > [!NOTE]
 > The intention of this action is purely to notify of any outdated packages and _not_ to perform any kind of update action.
@@ -125,8 +125,7 @@ jobs:
 This action leverages these projects:
 
 - <a href="https://github.com/dotnet-outdated/dotnet-outdated">dotnet-outdated</a>
-- <a href="https://github.com/MeilCli/npm-update-check-action">npm-update-check-action</a>
-- <a href="https://github.com/thollander/actions-comment-pull-request">actions-comment-pull-request</a>
+- <a href="https://docs.npmjs.com/cli/commands/npm-outdated">npm outdated</a>
 - <a href="https://github.com/actions/setup-dotnet">setup-dotnet</a>
 
 ## Contribute

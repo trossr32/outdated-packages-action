@@ -1,5 +1,13 @@
 # outdated-packages-action
 
+## 4.0.0
+
+### Major Changes
+
+- Remove the archived `MeilCli/npm-update-check-action` dependency; npm outdated checks now run locally via `npm outdated`
+- Remove the `thollander/actions-comment-pull-request` dependency; PR comments are now created/updated locally via the GitHub CLI (`gh`)
+- These changes drop the last Node 20 based actions, removing the upcoming Node 20 deprecation warnings (GitHub requires Node 24 from June 16th 2026)
+
 ## 3.1.0
 
 ### Minor Changes
