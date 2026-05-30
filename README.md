@@ -41,7 +41,7 @@ This action will run either or both of:
 
 #### `use-npm-outdated`
 
-**Optional** - Whether to run npm-update-check-action. Default `false`.
+**Optional** - Whether to run `npm outdated`. Default `false`.
 
 #### `npm-project-directory`
 
@@ -50,6 +50,10 @@ This action will run either or both of:
 #### `hide-successful-checks`
 
 **Optional** - When true, don't add a success comment to the PR when checks are successful. Default `false`.
+
+#### `comment-label`
+
+**Optional** - A label used to distinguish this run's PR comment, e.g. a matrix variant name. It is included in the comment's hidden identifier so parallel matrix jobs each update their own comment instead of overwriting one another, and is shown at the top of the comment. If omitted, the npm project directory / dotnet solution path is used to differentiate comments. Default `''`.
 
 ## Example github action
 
@@ -76,7 +80,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: trossr32/outdated-packages-action@v3
+      - uses: trossr32/outdated-packages-action@v4
         with:
           # Whether to run dotnet-outdated. Default is false if not supplied.
           use-dotnet-outdated: true
@@ -100,6 +104,44 @@ jobs:
 
           # When true, don't add a success comment to the PR when checks are successful. Default is false if not supplied.
           hide-successful-checks: false
+```
+
+## Example github action (matrix)
+
+When checking multiple projects/directories in parallel with a matrix, each job posts its own PR comment. Comments are differentiated automatically by `npm-project-directory` / `dotnet-solution-or-project-path`; set `comment-label` to give each comment a friendlier title.
+
+outdated.yml
+```yaml
+name: Outdated package checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [ main ]
+
+jobs:
+  outdated-packages-check:
+    runs-on: ubuntu-latest
+    name: Check outdated packages (${{ matrix.name }})
+    permissions:
+      pull-requests: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: project root
+            directory: '.'
+          - name: playwright tests
+            directory: 'tests/playwright'
+
+    steps:
+      - uses: trossr32/outdated-packages-action@v4
+        with:
+          use-npm-outdated: true
+          npm-project-directory: ${{ matrix.directory }}
+          # Optional: titles the comment and keeps each variant's comment separate
+          comment-label: ${{ matrix.name }}
 ```
 
 ## Example output

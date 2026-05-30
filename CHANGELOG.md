@@ -7,6 +7,9 @@
 - Remove the archived `MeilCli/npm-update-check-action` dependency; npm outdated checks now run locally via `npm outdated`
 - Remove the `thollander/actions-comment-pull-request` dependency; PR comments are now created/updated locally via the GitHub CLI (`gh`)
 - These changes drop the last Node 20 based actions, removing the upcoming Node 20 deprecation warnings (GitHub requires Node 24 from June 16th 2026)
+- npm outdated reports now include a semver severity icon (🔴 major / 🟠 minor / 🟢 patch) and an Update column
+- Fix matrix runs overwriting each other's PR comment: each comment is now identified per project directory / solution path, so parallel matrix jobs each maintain their own comment while re-runs of the same variant still update in place
+- Add optional `comment-label` input (e.g. set to a matrix variant name) to disambiguate and title each comment; each comment now shows its scope and a link to the workflow run
 
 ## 3.1.0
 

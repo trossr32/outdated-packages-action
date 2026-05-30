@@ -27,10 +27,12 @@ tmp="$(mktemp)"
 trap 'rm -f "$tmp"' EXIT
 { printf '%s\n\n' "$MARKER"; cat "$BODY_FILE"; } > "$tmp"
 
-# Find an existing comment carrying our marker.
+# Find an existing comment carrying our marker. Pipe gh's JSON to jq with the
+# marker passed via --arg, so tags containing slashes/spaces/etc are matched
+# literally without any quoting or injection concerns.
 existing_id="$(gh api --paginate \
   "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" \
-  --jq ".[] | select(.body | contains(\"${MARKER}\")) | .id" | head -n1)"
+  | jq -r --arg marker "$MARKER" '.[] | select(.body | contains($marker)) | .id' | head -n1)"
 
 if [ -n "$existing_id" ]; then
   gh api --method PATCH \
