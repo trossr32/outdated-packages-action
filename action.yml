@@ -50,6 +50,16 @@ inputs:
     required: false
     default: 'false'
 
+  # optional label to distinguish this run's PR comment (e.g. a matrix variant name)
+  comment-label:
+    description: >-
+      Optional label to distinguish this run's PR comment, e.g. a matrix variant name such as matrix.name.
+      It is included in the comment's hidden identifier so parallel matrix jobs each update their own comment
+      instead of overwriting one another, and is shown at the top of the comment. If omitted, the npm project
+      directory / dotnet solution path is used to differentiate comments.
+    required: false
+    default: ''
+
 runs:
   using: composite
   steps:
@@ -87,37 +97,67 @@ runs:
       shell: bash
       run: npm install
 
-    - name: NPM update check
-      if: ${{ inputs.use-npm-outdated == 'true' }}
-      uses: MeilCli/npm-update-check-action@v5
-      id: npm-outdated-check
-      with:
-        execute_directories: ${{ inputs.npm-project-directory }}
-        output_text_style: short
-
-    - name: Create npm outdated comment
+    - name: NPM outdated check
       if: ${{ inputs.use-npm-outdated == 'true' }}
       id: npm-outdated
       working-directory: ${{ inputs.npm-project-directory }}
       shell: bash
       run: |
-        if [[ "${{ steps.npm-outdated-check.outputs.has_npm_update }}" = "false" ]]; then
-            printf "## No outdated npm packages found :rocket:" >> npm_outdated.md
+        # npm outdated exits 1 when packages are outdated, so don't let it fail the step
+        npm outdated --json > npm_outdated.json || true
+
+        # Scope shown in the comment and used to keep each matrix variant's comment distinct
+        scope="${{ inputs.comment-label }}"
+        if [[ -z "$scope" ]]; then scope="${{ inputs.npm-project-directory }}"; fi
+        run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+        {
+            echo "#### Outdated npm packages — \`${scope}\`"
+            echo ''
+            echo "_Reported by [this workflow run](${run_url})._"
+            echo ''
+        } > npm_outdated.md
+
+        if [[ ! -s npm_outdated.json ]] || [[ "$(jq 'length' npm_outdated.json)" -eq 0 ]]; then
+            echo "**No outdated npm packages found** :rocket:" >> npm_outdated.md
             echo "skip-comment=${{ inputs.hide-successful-checks }}" >> $GITHUB_OUTPUT
         else
-            printf "${{ steps.npm-outdated-check.outputs.npm_update_text }}" >> npm_outdated.md
-            echo ' ' | cat - npm_outdated.md > temp && mv temp npm_outdated.md
-            echo '> Outdated npm packages found, update if possible. Run ```npm outdated``` in the terminal to view locally.' | cat - npm_outdated.md > temp && mv temp npm_outdated.md
-            echo '> [!WARNING]' | cat - npm_outdated.md > temp && mv temp npm_outdated.md
+            {
+                echo '> [!WARNING]'
+                echo '> Outdated npm packages found, update if possible. Run `npm outdated` in the terminal to view locally (with colour).'
+                echo ''
+                echo '| Package | Current | Wanted | Latest | Update |'
+                echo '| --- | --- | --- | --- | --- |'
+                jq -r '
+                    # Split a version into [major, minor, patch], ignoring any pre-release/build suffix.
+                    def parts(v): (v // "" | tostring | split("+")[0] | split("-")[0] | split(".") | map(tonumber? // 0));
+                    # Classify the current -> latest jump as major / minor / patch.
+                    def level(cur; lat):
+                        parts(cur) as $c | parts(lat) as $l |
+                        if   ($l[0] // 0) > ($c[0] // 0) then "major"
+                        elif ($l[1] // 0) > ($c[1] // 0) then "minor"
+                        elif ($l[2] // 0) > ($c[2] // 0) then "patch"
+                        else "none" end;
+                    def icon($lvl): {major: "🔴", minor: "🟠", patch: "🟢", none: "—"}[$lvl];
+                    to_entries[]
+                    | (.value | if type == "array" then .[0] else . end) as $v
+                    | level($v.current; $v.latest) as $lvl
+                    | "| \(icon($lvl)) \(.key) | \($v.current // "-") | \($v.wanted // "-") | \($v.latest // "-") | \(if $lvl == "none" then "—" else $lvl end) |"
+                ' npm_outdated.json
+            } >> npm_outdated.md
             echo "skip-comment=false" >> $GITHUB_OUTPUT
         fi
 
     - name: NPM outdated PR comment
       if: ${{ inputs.use-npm-outdated == 'true' && steps.npm-outdated.outputs.skip-comment == 'false' }}
-      uses: thollander/actions-comment-pull-request@v3
-      with:
-        file-path: "${{ inputs.npm-project-directory }}/npm_outdated.md"
-        comment-tag: npm_outdated
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+      run: |
+        # Make the comment identifier unique per matrix variant so parallel jobs don't overwrite each other
+        tag="npm_outdated:${{ inputs.comment-label != '' && inputs.comment-label || inputs.npm-project-directory }}"
+        bash "${{ github.action_path }}/scripts/upsert-pr-comment.sh" "$tag" "${{ inputs.npm-project-directory }}/npm_outdated.md"
 
     # Dotnet outdated
     - name: Restore packages
@@ -165,7 +205,7 @@ runs:
         echo "$OUTPUT"
 
         if [[ $OUTPUT =~ "No outdated dependencies" ]]; then
-            printf "## No outdated nuget packages found :rocket:" >> outdated.md
+            printf "**No outdated nuget packages found** :rocket:" >> outdated.md
             echo "skip-comment=${{ inputs.hide-successful-checks }}" >> $GITHUB_OUTPUT
         elif [[ $OUTPUT =~ "Errors occurred" ]]; then
             echo '> Are you sure you can connect to all your configured NuGet servers?' | cat - outdated.md > temp && mv temp outdated.md
@@ -178,6 +218,17 @@ runs:
             echo "skip-comment=false" >> $GITHUB_OUTPUT
         fi
 
+        # Prepend a scope heading + run pointer so matrix variants are distinguishable in the PR
+        scope="${{ inputs.comment-label }}"
+        if [[ -z "$scope" ]]; then scope="${{ inputs.dotnet-solution-or-project-path }}"; fi
+        run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        {
+            echo "#### Outdated nuget packages — \`${scope}\`"
+            echo ''
+            echo "_Reported by [this workflow run](${run_url})._"
+            echo ''
+        } | cat - outdated.md > temp && mv temp outdated.md
+
     - name: test
       if: ${{ inputs.use-dotnet-outdated == 'true' }}
       shell: bash
@@ -186,7 +237,11 @@ runs:
 
     - name: Dotnet outdated PR comment
       if: ${{ inputs.use-dotnet-outdated == 'true' && steps.dotnet-outdated.outputs.skip-comment == 'false' }}
-      uses: thollander/actions-comment-pull-request@v3
-      with:
-        file-path: "outdated.md"
-        comment-tag: outdated
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+      run: |
+        # Make the comment identifier unique per matrix variant so parallel jobs don't overwrite each other
+        tag="outdated:${{ inputs.comment-label != '' && inputs.comment-label || inputs.dotnet-solution-or-project-path }}"
+        bash "${{ github.action_path }}/scripts/upsert-pr-comment.sh" "$tag" "outdated.md"

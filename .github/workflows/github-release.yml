@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Get Changelog Entry
         id: get-changelog-entry
@@ -36,7 +36,7 @@ jobs:
           EOInfo
 
       - name: Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         # only run if we have a changelog entry
         if: steps.get-changelog-entry.outputs.last-change-entry != ''
         with:
